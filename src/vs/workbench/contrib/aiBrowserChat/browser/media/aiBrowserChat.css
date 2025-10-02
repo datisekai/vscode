@@ -1,0 +1,391 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.ai-browser-chat-container {
+	display: flex;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	position: relative;
+}
+
+/* Browser Panel - Left 80% */
+.browser-panel {
+	width: 80%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	border-right: 1px solid var(--vscode-panel-border);
+	min-width: 0; /* Allow flex shrink */
+}
+
+.browser-toolbar {
+	display: flex;
+	padding: 12px;
+	gap: 8px;
+	background-color: var(--vscode-editorGroupHeader-tabsBackground);
+	border-bottom: 1px solid var(--vscode-panel-border);
+	flex-shrink: 0;
+}
+
+.url-input {
+	flex: 1;
+	min-width: 0; /* Allow shrink */
+	padding: 8px 12px;
+	background-color: var(--vscode-input-background);
+	color: var(--vscode-input-foreground);
+	border: 1px solid var(--vscode-input-border);
+	border-radius: 4px;
+	font-size: 14px;
+	outline: none;
+}
+
+.url-input:focus {
+	border-color: var(--vscode-focusBorder);
+}
+
+.load-button {
+	padding: 8px 16px;
+	background-color: var(--vscode-button-background);
+	color: var(--vscode-button-foreground);
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+	font-weight: 500;
+	flex-shrink: 0;
+}
+
+.load-button:hover {
+	background-color: var(--vscode-button-hoverBackground);
+}
+
+.browser-content {
+	flex: 1;
+	overflow: hidden;
+	background-color: #ffffff;
+	min-height: 0; /* Important for flex child with overflow */
+}
+
+.website-iframe {
+	width: 100%;
+	height: 100%;
+	border: none;
+	display: block;
+}
+
+/* Chat Panel - Right 20% */
+.chat-panel {
+	width: 20%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	background-color: var(--vscode-sideBar-background);
+	min-width: 250px; /* Minimum width for chat */
+}
+
+.chat-header {
+	padding: 16px;
+	border-bottom: 1px solid var(--vscode-panel-border);
+	background-color: var(--vscode-sideBarSectionHeader-background);
+	flex-shrink: 0;
+}
+
+.chat-header h3 {
+	font-size: 16px;
+	font-weight: 600;
+	margin: 0 0 4px 0;
+	color: var(--vscode-sideBarTitle-foreground);
+}
+
+.chat-subtitle {
+	font-size: 12px;
+	margin: 0;
+	color: var(--vscode-descriptionForeground);
+}
+
+/* FIX: Proper scroll container */
+.chat-messages {
+	flex: 1;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	min-height: 0; /* Critical for scroll to work */
+	max-height: 100%; /* Prevent overflow */
+}
+
+.empty-state {
+	text-align: center;
+	color: var(--vscode-descriptionForeground);
+	padding: 20px;
+}
+
+.empty-state p {
+	margin-bottom: 16px;
+	font-size: 14px;
+}
+
+.hint {
+	font-size: 12px;
+	font-weight: 600;
+	margin-top: 20px;
+	margin-bottom: 8px;
+}
+
+.empty-state ul {
+	list-style: none;
+	text-align: left;
+	font-size: 12px;
+	color: var(--vscode-textLink-foreground);
+	padding: 0;
+}
+
+.empty-state li {
+	padding: 4px 0;
+}
+
+.empty-state li:before {
+	content: "• ";
+	margin-right: 6px;
+}
+
+.message {
+	display: flex;
+	margin-bottom: 8px;
+	flex-shrink: 0;
+}
+
+.user-message {
+	justify-content: flex-end;
+}
+
+.ai-message {
+	justify-content: flex-start;
+}
+
+.message-content {
+	max-width: 90%;
+	padding: 10px 14px;
+	border-radius: 8px;
+	font-size: 13px;
+	line-height: 1.5;
+	word-wrap: break-word;
+	word-break: break-word; /* Break long words */
+	overflow-wrap: break-word;
+	white-space: pre-wrap; /* Preserve formatting */
+}
+
+.user-message .message-content {
+	background-color: var(--vscode-button-background);
+	color: var(--vscode-button-foreground);
+}
+
+.ai-message .message-content {
+	background-color: var(--vscode-input-background);
+	color: var(--vscode-input-foreground);
+	border: 1px solid var(--vscode-input-border);
+}
+
+.loading {
+	font-style: italic;
+	opacity: 0.8;
+}
+
+.chat-input-container {
+	padding: 12px;
+	border-top: 1px solid var(--vscode-panel-border);
+	display: flex;
+	gap: 8px;
+	background-color: var(--vscode-sideBar-background);
+	flex-shrink: 0;
+}
+
+.chat-input {
+	flex: 1;
+	min-width: 0;
+	padding: 8px 12px;
+	background-color: var(--vscode-input-background);
+	color: var(--vscode-input-foreground);
+	border: 1px solid var(--vscode-input-border);
+	border-radius: 4px;
+	font-size: 13px;
+	outline: none;
+	resize: none;
+}
+
+.chat-input:focus {
+	border-color: var(--vscode-focusBorder);
+}
+
+.chat-input:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.send-button {
+	padding: 8px 16px;
+	background-color: var(--vscode-button-background);
+	color: var(--vscode-button-foreground);
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 13px;
+	font-weight: 500;
+	white-space: nowrap;
+	flex-shrink: 0;
+}
+
+.send-button:hover:not(:disabled) {
+	background-color: var(--vscode-button-hoverBackground);
+}
+
+.send-button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+/* Scrollbar styling */
+.chat-messages::-webkit-scrollbar {
+	width: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+	background: var(--vscode-scrollbarSlider-background);
+	border-radius: 5px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+	background: var(--vscode-scrollbarSlider-hoverBackground);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet and smaller (max-width: 1200px) */
+@media (max-width: 1200px) {
+	.browser-panel {
+		width: 70%;
+	}
+	
+	.chat-panel {
+		width: 30%;
+		min-width: 280px;
+	}
+	
+	.message-content {
+		font-size: 12px;
+	}
+}
+
+/* Small tablet (max-width: 900px) */
+@media (max-width: 900px) {
+	.browser-panel {
+		width: 60%;
+	}
+	
+	.chat-panel {
+		width: 40%;
+		min-width: 300px;
+	}
+	
+	.url-input {
+		font-size: 12px;
+	}
+	
+	.load-button {
+		padding: 6px 12px;
+		font-size: 12px;
+	}
+}
+
+/* Mobile and very small screens (max-width: 768px) */
+@media (max-width: 768px) {
+	.ai-browser-chat-container {
+		flex-direction: column;
+	}
+	
+	.browser-panel {
+		width: 100%;
+		height: 50%;
+		border-right: none;
+		border-bottom: 1px solid var(--vscode-panel-border);
+	}
+	
+	.chat-panel {
+		width: 100%;
+		height: 50%;
+		min-width: unset;
+	}
+	
+	.chat-header h3 {
+		font-size: 14px;
+	}
+	
+	.chat-subtitle {
+		font-size: 11px;
+	}
+	
+	.empty-state {
+		padding: 12px;
+	}
+	
+	.empty-state p {
+		font-size: 12px;
+	}
+}
+
+/* Very small mobile (max-width: 480px) */
+@media (max-width: 480px) {
+	.browser-toolbar {
+		padding: 8px;
+		gap: 6px;
+	}
+	
+	.url-input {
+		font-size: 11px;
+		padding: 6px 8px;
+	}
+	
+	.load-button {
+		padding: 6px 10px;
+		font-size: 11px;
+	}
+	
+	.chat-header {
+		padding: 12px;
+	}
+	
+	.chat-messages {
+		padding: 12px;
+		gap: 8px;
+	}
+	
+	.message-content {
+		font-size: 11px;
+		padding: 8px 10px;
+		max-width: 95%;
+	}
+	
+	.chat-input-container {
+		padding: 8px;
+		gap: 6px;
+	}
+	
+	.chat-input {
+		font-size: 12px;
+		padding: 6px 10px;
+	}
+	
+	.send-button {
+		padding: 6px 12px;
+		font-size: 12px;
+	}
+}
