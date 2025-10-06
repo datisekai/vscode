@@ -72,7 +72,7 @@ export class AiBrowserChatEditor extends EditorPane {
 
 		const browserContent = dom.append(this.browserPanel, dom.$('.browser-content'));
 		this.iframe = dom.append(browserContent, dom.$('iframe.website-iframe')) as HTMLIFrameElement;
-		this.iframe.src = 'https://sisu.co/';
+		this.iframe.src = `https://proxy.finn777.site/api/iframe?url=https://sisu.co/`;
 		this.iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts allow-forms');
 
 		// Create chat panel (right 20%)
@@ -130,7 +130,7 @@ export class AiBrowserChatEditor extends EditorPane {
 		}
 
 		// Load in iframe for visual display
-		this.iframe.src = url;
+		this.iframe.src = `https://proxy.finn777.site/api/iframe?url=${url}`;
 
 		// Fetch content for AI processing
 		try {
